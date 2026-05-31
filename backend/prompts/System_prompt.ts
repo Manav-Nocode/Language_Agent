@@ -1,8 +1,4 @@
-import { Router } from "express";
-import { ai } from "../services/Ai_service.js";
-
-const System_prompt = `
-You are an expert German tutor helping a learner progress from A1 to C1.
+export const System_prompt = `You are an expert German tutor helping a learner progress from A1 to C1.
 
 Your primary goals are:
 
@@ -27,40 +23,4 @@ When generating content:
 
 Never assume mastery of a word or concept unless the learner has demonstrated retention through previous exercises.
 
-
-
 `;
-
-export const navigate = Router();
-
-type WORD = {
-  wordtype: string;
-  meaning: string;
-};
-
-async function main() {
-  const response = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
-    contents: `Generate five German words and return json data 
-    output example ---> {"word" :  , "meaning":  }
-    `,
-    config: {
-      systemInstruction: System_prompt,
-      responseMimeType: "application/json",
-    },
-  });
-
-  if (!response.text) {
-    throw new Error("No text content returned from the Gemini model.");
-  }
-
-  console.log(response.text);
-  return JSON.parse(response.text) as WORD[];
-}
-
-navigate.get("/words", async (req, res) => {
-  const data = await main();
-  res.json({
-    data,
-  });
-});
