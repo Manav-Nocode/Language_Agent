@@ -20,6 +20,6 @@ export async function generateWords() {
   }
 
   const Words_generated = JSON.parse(response.text) as WORD[];
-  await generateExamples(Words_generated);
+  // await generateExamples(Words_generated);
   return Words_generated;
 }

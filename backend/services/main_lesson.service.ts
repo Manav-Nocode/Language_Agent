@@ -4,4 +4,8 @@ import { generateWords } from "./words.service.js";
 export async function generateLesson() {
   const words = await generateWords();
   const examples = await generateExamples(words);
+  return {
+    words,
+    examples,
+  };
 }
