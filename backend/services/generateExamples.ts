@@ -1,3 +1,4 @@
+import { json } from "zod";
 import { ai } from "../lib/Ai_service.js";
 import { System_prompt } from "../prompts/System_prompt.js";
 
@@ -5,14 +6,18 @@ type WORD = {
   wordtype: string;
   meaning: string;
 };
+type SENTENCE = {
+  word: string;
+  sentence: string[];
+};
 
 export const generateExamples = async (words: WORD[]) => {
-  console.log(`received ${words}`);
   const response = await ai.models.generateContent({
     model: "gemini-3.5-flash",
-    contents: `Generate 2 examples sentences for each of these words ${words}
+    contents: `Generate 2 examples sentences for each word.
+    Words: ${JSON.stringify(words, null, 2)}
     this should be the format
-    [
+    
   {
     "word": "während",
     "examples": [
@@ -21,7 +26,7 @@ export const generateExamples = async (words: WORD[]) => {
       "..."
     ]
   }
-]
+
     `,
     config: {
       systemInstruction: System_prompt,
@@ -34,5 +39,7 @@ export const generateExamples = async (words: WORD[]) => {
   }
 
   const Sentences_generated = JSON.parse(response.text);
+  console.log(typeof Sentences_generated);
+  console.log(Sentences_generated);
   return Sentences_generated;
 };
