@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import Word_Module from "../Components/Word_Module";
 import Words from "../pages/Words";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 interface WordData {
   word: string;
   meaning: string;
-  // add other fields your agent sends, like 'example'
 }
 
 const App = () => {
   const [words, setWords] = useState<WordData[]>([]);
   useEffect(() => {
-    const url = "http://localhost:4000/home/words";
+    const url = "http://localhost:4000/api/words";
     async function Newwords() {
       const response = await fetch(url, {
         method: "GET",
